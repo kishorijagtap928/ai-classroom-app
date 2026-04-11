@@ -20,6 +20,7 @@ export type Database = {
           created_at: string
           id: string
           role: string
+          session_id: string | null
           topic: string | null
           user_id: string
         }
@@ -28,6 +29,7 @@ export type Database = {
           created_at?: string
           id?: string
           role: string
+          session_id?: string | null
           topic?: string | null
           user_id: string
         }
@@ -36,7 +38,40 @@ export type Database = {
           created_at?: string
           id?: string
           role?: string
+          session_id?: string | null
           topic?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "chat_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -78,7 +113,9 @@ export type Database = {
       }
       profiles: {
         Row: {
+          academic_type: string | null
           avatar_url: string | null
+          branch: string | null
           created_at: string
           full_name: string
           id: string
@@ -86,7 +123,9 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          academic_type?: string | null
           avatar_url?: string | null
+          branch?: string | null
           created_at?: string
           full_name?: string
           id?: string
@@ -94,7 +133,9 @@ export type Database = {
           user_id: string
         }
         Update: {
+          academic_type?: string | null
           avatar_url?: string | null
+          branch?: string | null
           created_at?: string
           full_name?: string
           id?: string

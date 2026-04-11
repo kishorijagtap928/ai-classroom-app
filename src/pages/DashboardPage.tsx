@@ -24,6 +24,11 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!user) return;
+    // Redirect to onboarding if academic type not set
+    if (profile && !profile.academic_type) {
+      navigate("/onboarding");
+      return;
+    }
     const fetchData = async () => {
       const { data: enr } = await supabase
         .from("enrollments")
@@ -40,7 +45,7 @@ export default function DashboardPage() {
       if (scores) setQuizScores(scores);
     };
     fetchData();
-  }, [user]);
+  }, [user, profile]);
 
   const getProgress = (enrollment: Enrollment) => {
     const chapters = enrollment.syllabi?.chapters || [];
@@ -86,7 +91,11 @@ export default function DashboardPage() {
           <h2 className="text-2xl font-heading font-bold text-foreground">
             Welcome back, {profile?.full_name || "Student"} 👋
           </h2>
-          <p className="text-muted-foreground mt-1">Continue your learning journey</p>
+          <p className="text-muted-foreground mt-1">
+            {profile?.academic_type && profile?.branch
+              ? `${profile.academic_type.charAt(0).toUpperCase() + profile.academic_type.slice(1)} — ${profile.branch}`
+              : "Continue your learning journey"}
+          </p>
         </div>
 
         {/* Quick Actions */}
